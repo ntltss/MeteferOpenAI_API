@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>たとえ話＋イメージ図生成</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2/dist/htmx.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen px-0 lg:flex lg:items-center lg:justify-center flex items-center justify-center">
+    <div class="w-full max-w-4xl lg:max-w-2xl bg-white p-4 lg:p-8 rounded-md shadow-lg lg:shadow-lg mx-0 lg:mx-auto space-y-6">
+        <h1 class="text-5xl lg:text-3xl font-bold text-center text-gray-800">🧠 たとえ話＋イメージ図生成</h1>
+
+        <!-- ステータスバー -->
+        <div id="status-bar" class="flex items-center space-x-2 text-blue-600 hidden">
+            <svg class="animate-spin h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            </svg>
+            <span class="text-sm text-5xl lg:text-2xl">生成中です... 少々お待ちください。</span>
+        </div>
+
+        <!-- フォーム -->
+        <form
+            hx-post="/generate/"
+            hx-trigger="submit"
+            hx-target="#result"
+            hx-swap="innerHTML"
+            hx-indicator="#status-bar"
+            class="space-y-4"
+        >
+            <div>
+                <label for="prompt" class="block font-semibold mb-1 text-xl lg:text-base text-4xl lg:text-2xl">📝 説明したい内容</label>
+                <textarea name="prompt" id="prompt" rows="4"
+                    class="w-full border border-gray-300 p-3 rounded-md  text-4xl lg:text-2xl lg:text-base focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    required></textarea>
+            </div>
+            <button type="submit"
+                class="w-full bg-blue-600 text-white py-3 text-xl lg:text-base rounded hover:bg-blue-700 transition text-4xl lg:text-2xl">🚀 生成する</button>
+        </form>
+
+        <!-- 結果表示エリア -->
+        <div id="result" class="mt-6 text-2xl lg:text-base"></div>
+    </div>
+
+    <script>
+        document.body.addEventListener('htmx:configRequest', function (evt) {
+            document.getElementById("status-bar").style.display = "flex";
+        });
+
+        document.body.addEventListener('htmx:afterSwap', function (evt) {
+            document.getElementById("status-bar").style.display = "none";
+        });
+
+        document.body.addEventListener('htmx:responseError', function (evt) {
+            document.getElementById("status-bar").style.display = "none";
+        });
+    </script>
+</body>
+</html>
