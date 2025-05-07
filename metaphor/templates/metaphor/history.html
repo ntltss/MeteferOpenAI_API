@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>生成履歴</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+        <h1 class="text-2xl font-bold mb-6">📜 生成履歴</h1>
+        <a href="/" class="text-blue-600 underline">← トップへ戻る</a>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            {% for record in records %}
+                <div class="border rounded p-4 shadow-sm">
+                    <p class="text-sm text-gray-600 mb-2">🕒 {{ record.created_at|date:"Y-m-d H:i" }}</p>
+                    <p class="font-semibold mb-2">📝 {{ record.prompt }}</p>
+                    <p class="mb-2">🧠 {{ record.metaphor }}</p>
+                    <img src="{{ record.image.url }}" alt="生成画像" class="w-full rounded border mt-2">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
