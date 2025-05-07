@@ -7,6 +7,8 @@ from django.core.files.base import ContentFile
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import History
+from django.shortcuts import get_object_or_404, redirect
+from django.conf import settings
 
 # .env から API キーを読み込む
 load_dotenv()
@@ -76,6 +78,16 @@ def generate_all(request):
 def history(request):
     records = History.objects.order_by('-created_at')
     return render(request, 'metaphor/history.html', {'records': records})
+
+def delete_history(request, pk):
+    history = get_object_or_404(History, pk=pk)
+    
+    # ファイルも削除
+    if history.image and os.path.isfile(history.image.path):
+        os.remove(history.image.path)
+
+    history.delete()
+    return redirect('history')
 
 # 最初の入力フォーム画面
 @csrf_exempt

@@ -17,6 +17,12 @@
                     <p class="font-semibold mb-2">📝 {{ record.prompt }}</p>
                     <p class="mb-2">🧠 {{ record.metaphor }}</p>
                     <img src="{{ record.image.url }}" alt="生成画像" class="w-full rounded border mt-2">
+
+                    <!-- 削除ボタン付きフォーム（追加） -->
+                    <form action="{% url 'delete_history' record.id %}" method="post" class="mt-2" onsubmit="return confirm('この履歴を削除しますか？');">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 text-sm hover:underline">🗑️ 削除する</button>
+                    </form>
                 </div>
             {% endfor %}
         </div>
